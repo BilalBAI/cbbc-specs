@@ -2,7 +2,17 @@ import datetime
 import time
 
 
-class cbbc:
+class MarginVault:
+    # Vault that holds the margin deposited by the issuers
+    pass
+
+
+class PremiumVault:
+    # Vvalut that holds the premium collected from the cbbc buyers
+    pass
+
+
+class CBBC:
     def __init__(self,
                  type='BULL',
                  underlying='BTC',
@@ -39,12 +49,9 @@ class cbbc:
         else:
             return intrinsic_value
 
+    @only_issuer
+    def mint_cbbc(self, margin_valut: MarginVault):
+        pass
 
-class margin_vault:
-    # Vault that holds the margin deposited by the issuers
-    pass
-
-
-class premium_vault:
-    # Vvalut that holds the premium collected from the cbbc buyers
-    pass
+    def buy_cbbc(self, premium_vault: PremiumVault):
+        pass
