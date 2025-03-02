@@ -38,3 +38,13 @@ class cbbc:
             return 0
         else:
             return intrinsic_value
+
+
+class margin_vault:
+    # Vault that holds the margin deposited by the issuers
+    pass
+
+
+class premium_vault:
+    # Vvalut that holds the premium collected from the cbbc buyers
+    pass
