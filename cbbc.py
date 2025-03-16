@@ -16,6 +16,9 @@ class MarginVault:
         self.margin_balance = 0
         self.status = None  # ['SAFE','WARNING','MARGIN_CALL','LIQUDATE']
 
+    def deposit_margin(self, token: address, amount: int):
+        self.margin_balance = self.margin_balance + amount
+
 
 class PremiumVault:
     # Valut that holds the premium collected from the cbbc buyers
@@ -31,6 +34,7 @@ class CBBC:
                  expiry_timestamp: int,  # timestamp
                  conversion_ratio: int,  # 1000
                  issuer: address,
+                 holders: dict,  # {address:amount}
                  margin_vault: MarginVault,
                  premium_vault: PremiumVault):
         ###
@@ -40,6 +44,7 @@ class CBBC:
         self.expiry_timestamp = expiry_timestamp
         self.conversion_ratio = conversion_ratio
         self.issuer = issuer
+        self.holders = holders
         self.margin_vault = margin_vault
         self.premium_vault = premium_vault
         ###
@@ -60,6 +65,8 @@ class CBBC:
             return 0
         else:
             return intrinsic_value
+
+    def deposit_margin(self):
 
     @only_issuer
     def mint_cbbc(self, margin_valut: MarginVault):
