@@ -2,43 +2,55 @@ import datetime
 import time
 
 
+class address:
+    # Ethereum Address
+    pass
+
+
 class MarginVault:
     # Vault that holds the margin deposited by the issuers
-    pass
+    def __init__(self, issuer, initial_margin_rate, maintainance_margin_rate):
+        self.issuer = issuer
+        self.maintainance_margin_rate = maintainance_margin_rate
+        self.initial_margin_rate = initial_margin_rate
+        self.margin_balance = 0
+        self.status = None  # ['SAFE','WARNING','MARGIN_CALL','LIQUDATE']
 
 
 class PremiumVault:
-    # Vvalut that holds the premium collected from the cbbc buyers
-    pass
+    # Valut that holds the premium collected from the cbbc buyers
+    def __init__(self):
+        pass
 
 
 class CBBC:
     def __init__(self,
-                 type='BULL',
-                 underlying='BTC',
-                 strike=60000,
-                 expiry=168,
-                 conversion_ratio=1000,
-                 category='N'):
+                 type: str['BULL', 'BEAR'],
+                 underlying: str['BTC', 'ETH', 'SOL'],
+                 strike: int,
+                 expiry_timestamp: int,  # timestamp
+                 conversion_ratio: int,  # 1000
+                 issuer: address,
+                 margin_vault: MarginVault,
+                 premium_vault: PremiumVault):
         ###
         self.type = type
         self.underlying = underlying
         self.strike = strike
-        self.expiry = expiry
+        self.expiry_timestamp = expiry_timestamp
         self.conversion_ratio = conversion_ratio
-        self.category = category
+        self.issuer = issuer
+        self.margin_vault = margin_vault
+        self.premium_vault = premium_vault
         ###
         self.called = False
-        self.issurance_timestamp = datetime.datetime.now()
-        self.expiry_datetime = self.issurance_timestamp + \
-            datetime.timedelta(hours=168)
+        self.issurance_timestamp = datetime.datetime.now().timestamp()
 
     def get_ticker(self):
-        return f"{self.underlying}-{self.strike}-{self.expiry_datetime.strftime('%Y%m%d%H')}-{self.type}"
+        return f"{self.underlying}-{self.strike}-{self.expiry_timestamp.strftime('%Y%m%d%H')}-{self.type}-{self.issuer[:5]}"
 
     def update_spot_price(self):
         # get underlying spot price from Oracle
-        # every hour
         self.spot = None
 
     def calc_intrinsic_value(self):
